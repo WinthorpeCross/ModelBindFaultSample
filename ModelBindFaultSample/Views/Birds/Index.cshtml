@@ -1,0 +1,73 @@
+﻿@model BirdIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<form id="sort-filter-form" class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-4">
+            @Html.DropDownListFor(m => m.SelectedBirdId,
+                 new SelectList(Model.AllBirdsDropDownList, "BirdId", "EnglishName"),
+                       new
+                       {
+                           @class = "form-control selectpicker-showtick",
+                           title = "Choose a bird species...",
+                           data_live_search = "true",
+                           data_show_subtext = "true",
+                           onchange = "this.form.submit()"
+                       })
+        </div>
+        <div class="col-sm-4">
+            <div>
+                <label class="control-label">Show All?</label>
+                <input asp-for="ShowAll" type="checkbox" data-toggle="toggle" onchange="this.form.submit()" data-on="All birds" data-off="Common birds">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div>
+                <label class="control-label">Show in Table?</label>
+                <input asp-for="ShowInTable" type="checkbox" data-toggle="toggle" onchange="this.form.submit()" data-on="Table" data-off="Thumbnails list">
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Creation Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BirdsList.Results)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirdId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnglishName)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @(await Component.InvokeAsync<PagerViewComponent>(Model.BirdsList))
+</div>
