@@ -27,7 +27,7 @@ namespace ModelBindFaultSample.Controllers
                 {
                     options.Page = 1;
                 }
-                BirdIndexViewModel viewModel = new BirdIndexViewModel();
+                var viewModel = new BirdIndexViewModel();
                 viewModel.AllBirdsDropDownList = await _context.Bird.ToListAsync();
                 viewModel.BirdsList = await _context.Bird.AsNoTracking().GetPaged(options.Page, pageSize);
                 viewModel.ShowAll = options.ShowAll;
