@@ -21,6 +21,11 @@ namespace ModelBindFaultSample.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(SortFilterBirdIndexOptions options)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 if (options.Page == 0)
@@ -39,6 +44,8 @@ namespace ModelBindFaultSample.Controllers
                 return NotFound();
             }
         }
+
+        
 
         // GET: Birds
         //public async Task<IActionResult> Index()
