@@ -23,15 +23,17 @@ namespace ModelBindFaultSample.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelStateErrorsExtensions.GetModelStateErrorMessages(ModelState);
+                return BadRequest(errors);
+            }
+
+            if (options.Page == 0)
+            {
+                options.Page = 1;
             }
 
             try
             {
-                if (options.Page == 0)
-                {
-                    options.Page = 1;
-                }
                 var viewModel = new BirdIndexViewModel();
                 viewModel.AllBirdsDropDownList = await _context.Bird.ToListAsync();
                 viewModel.BirdsList = await _context.Bird.AsNoTracking().GetPaged(options.Page, pageSize);
